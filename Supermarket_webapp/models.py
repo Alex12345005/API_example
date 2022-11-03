@@ -13,3 +13,12 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+
+class Product(Base):
+    __tablename__ = "products"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True)
+    description = Column(String, unique=True, index=True)
+    price = Column(Integer, unique=True, index=True)
+    barcode = Column(Integer, unique=True, index=True)
