@@ -35,9 +35,9 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 @app.post("/products/", response_model=schemas.Product)
 def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)):
-    db_product = crud.get_products_by_name(db, name=product.name)
+    db_product = crud.get_products_by_barcode(db, barcode=product.barcode)
     if db_product:
-        raise HTTPException(status_code=400, detail="Product already in stock!")
+        raise HTTPException(status_code=400, detail="Product with same barcode already in stock!")
     return crud.create_product(db=db, product=product)
 
 @app.get("/products")
@@ -53,3 +53,8 @@ def read_product(product_id: int, db: Session = Depends(get_db)):
     if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found!")
     return db_product
+
+
+@app.post("/cartitem/", response_model=schemas.CartItem)
+def create_cart_item(cartitem: schemas.CartItemCreate, db: Session = Depends(get_db)):
+    return crud.create_cart_item(db=db, cart_item=cartitem)

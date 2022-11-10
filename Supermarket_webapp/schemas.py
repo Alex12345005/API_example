@@ -35,3 +35,20 @@ class Product(ProductBase):
     
     class Config:
         orm_mode = True
+
+class CartItemBase(BaseModel):
+    pass
+
+class CartItemCreate(CartItemBase):
+    user_id: int
+    product_barcode: int
+    quantity: int
+
+
+class CartItem(CartItemBase):
+    user_id: int
+    product_barcode: int
+    quantity: int
+    
+    class Config:
+        orm_mode = True

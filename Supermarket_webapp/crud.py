@@ -4,7 +4,7 @@ from . import models, schemas
 import logging
 
 
-def get_user(db: Session, user_id: int):
+def get_user_by_id(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
@@ -35,6 +35,13 @@ def get_products_by_name(db: Session, name: str):
         return result_set
     return db.query(models.Product).all()
 
+def get_products_by_barcode(db: Session, barcode: str):
+    logging.error("got parameter %s" ,barcode)
+    if barcode != "":
+        result_set = db.query(models.Product).filter(models.Product.barcode == barcode).all()
+        return result_set
+    return db.query(models.Product).all()
+
 
 def get_product(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Product).offset(skip).limit(limit).all()
@@ -47,3 +54,14 @@ def create_product(db: Session, product: schemas.ProductCreate):
     db.commit()
     db.refresh(db_product)
     return db_product
+
+def create_cart_item(db: Session, cart_item: schemas.CartItemCreate):
+    db_cartitem = models.CartItem(user_id=cart_item.user_id, product_barcode = cart_item.product_barcode,
+                                quantity = cart_item.quantity)
+    db.add(db_cartitem)
+    db.commit()
+    db.refresh(db_cartitem)
+    return db_cartitem
+
+def get_cart_item(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.CartItem).offset(skip).limit(limit).all()
