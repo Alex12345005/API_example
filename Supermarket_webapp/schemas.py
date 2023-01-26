@@ -21,17 +21,16 @@ class ProductBase(BaseModel):
     pass
 
 class ProductCreate(ProductBase):
+    id: int
     name: str
     description: str
     price: int
-    barcode: int
 
 class Product(ProductBase):
     id: int
     name : str
     description: str
     price: int
-    barcode: int
     
     class Config:
         orm_mode = True

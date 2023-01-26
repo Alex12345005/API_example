@@ -35,7 +35,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 @app.post("/products/", response_model=schemas.Product)
 def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)):
-    db_product = crud.get_products_by_barcode(db, barcode=product.barcode)
+    db_product = crud.get_products_by_id(db, id=product.id)
     if db_product:
         raise HTTPException(status_code=400, detail="Product with same barcode already in stock!")
     return crud.create_product(db=db, product=product)
@@ -47,11 +47,14 @@ async def read_products(name:str = "",  db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Product not found!")
     return db_products
     
-@app.get("/products/{id}", response_model=schemas.Product)
-def read_product(product_id: int, db: Session = Depends(get_db)):
-    db_product = crud.get_product(db, product_id=product_id)
+@app.get("/products/{id}/", response_model=schemas.Product)
+def read_product(id, db: Session = Depends(get_db)):
+    logging.error("Got id %s",id)
+    db_product = crud.get_product_by_id(db, id=id)
     if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found!")
+    logging.error("Got product %s", db_product)
+
     return db_product
 
 

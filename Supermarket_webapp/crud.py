@@ -35,10 +35,10 @@ def get_products_by_name(db: Session, name: str):
         return result_set
     return db.query(models.Product).all()
 
-def get_products_by_barcode(db: Session, barcode: str):
-    logging.error("got parameter %s" ,barcode)
-    if barcode != "":
-        result_set = db.query(models.Product).filter(models.Product.barcode == barcode).all()
+def get_product_by_id(db: Session, id: str):
+    logging.info("got parameter %s" ,id)
+    if id != "":
+        result_set = db.query(models.Product).filter(models.Product.id == id).first()
         return result_set
     return db.query(models.Product).all()
 
@@ -49,7 +49,7 @@ def get_product(db: Session, skip: int = 0, limit: int = 100):
 
 def create_product(db: Session, product: schemas.ProductCreate):
     db_product = models.Product(name=product.name, description = product.description,
-                                price = product.price, barcode = product.barcode)
+                                price = product.price, id = product.id)
     db.add(db_product)
     db.commit()
     db.refresh(db_product)

@@ -23,7 +23,7 @@ class Product(Base):
     name = Column(String, unique=True, index=True)
     description = Column(String, unique=True, index=True)
     price = Column(Integer, unique=True, index=True)
-    barcode = Column(Integer, unique=True, index=True)
+
 
 class CartItem(Base):
     """cart item representation."""
